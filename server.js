@@ -8,11 +8,14 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require("express");
 const connectDb = require("./config/connectDB");
 const Note = require("./models/noteModel");
+const usersController = require("./Controllers/usersController");
 const notesController = require("./Controllers/notesController");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 //create express app
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
 
@@ -22,6 +25,13 @@ app.use(cors());
 connectDb();
 
 //routing
+app.post("/signup", usersController.signup);
+
+app.post("/login", usersController.login);
+
+app.get("/logout", usersController.logout);
+
+
 app.get("/notes", notesController.fetchNotes);
 
 app.get("/notes/:id", notesController.fetchNoteById);
