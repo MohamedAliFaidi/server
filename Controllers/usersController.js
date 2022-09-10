@@ -26,23 +26,35 @@ async function login(req, res) {
     if (!isMatch) {
       return res.status(401).json("wrong password");
     }
-    const exp = Date.now() + 1000 * 60 * 60 * 7;
+    const exp = Date.now() + 1000 *60 * 60 * 7;
     const token = jwt.sign({ sub: user._id, exp }, process.env.SECRET);
     res.cookie("Authorization", token, {
       expires: new Date(exp),
       httpOnly: true,
     });
 
-    res.status(200).json( "logged in");
+    res.status(200).json("logged in");
   } catch (err) {
     console.log(err);
     res.status(400).json("error");
   }
 }
 
-function logout(req, res) {}
+async function checkAuth(req, res) {
+  console.log(req.user.Query);
+  await res.status(200).json("authorized");}
+
+function logout(req, res) {
+  try{
+res.clearCookie("authorization");
+res.status(200).json("logged out");}
+catch(err){
+  console.log(err);
+  res.status(400).json("try again");
+}}
 module.exports = {
   signup,
   login,
   logout,
+  checkAuth,
 };

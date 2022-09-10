@@ -12,11 +12,17 @@ const usersController = require("./Controllers/usersController");
 const notesController = require("./Controllers/notesController");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const requireAuth = require("./middlewere/requireAuth");
 //create express app
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(
+  {
+    origin: true,
+    credentials: true,
+  }
+));
 
 
 
@@ -31,6 +37,7 @@ app.post("/login", usersController.login);
 
 app.get("/logout", usersController.logout);
 
+app.get("/checkAuth", requireAuth, usersController.checkAuth);
 
 app.get("/notes", notesController.fetchNotes);
 
