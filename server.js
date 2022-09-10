@@ -9,9 +9,11 @@ const express = require("express");
 const connectDb = require("./config/connectDB");
 const Note = require("./models/noteModel");
 const notesController = require("./Controllers/notesController");
+const cors = require("cors");
 //create express app
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 
 
@@ -37,9 +39,9 @@ app.get("/", (req, res) => {
 
 app.post("/notes", async (req, res) => {
     //get data from request body
-    const { title, content } = req.body;
+    const { title, body } = req.body;
     //create new note
-    const note = await Note.create({ title, content });
+    const note = await Note.create({ title, body });
     //send response
     res.status(201).json({ note });
 });
