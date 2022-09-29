@@ -41,9 +41,13 @@ async function login(req, res) {
 }
 
 async function checkAuth(req, res) {
+  try{
   console.log(req.user.Query);
   await res.status(200).json("authorized");}
-
+}catch(err){
+  console.log(err)
+  res.status(400).json("Unauthorized")
+}}
 function logout(req, res) {
   try{
 res.clearCookie("authorization");
